@@ -42,7 +42,7 @@ function App() {
       <InputGroup className="mb-3">
         <FormControl
           id="noteinput"
-          placeholder="Recipient's username"
+          placeholder="Enter the name of manga"
           aria-label="Recipient's username"
           aria-describedby="basic-addon2"
         />
