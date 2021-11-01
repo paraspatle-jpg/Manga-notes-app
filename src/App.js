@@ -1,23 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import produce from "immer";
+import InputGroup from "react-bootstrap/InputGroup";
+import FormControl from "react-bootstrap/FormControl";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import Notes from "./components/notes/notes.js";
 
 function App() {
+  const initialState = [];
+
+  const [data, setData] = useState(initialState);
+
+  const handleDelete = (id) => {
+    setData(
+      produce((draft) => {
+        const i = draft.findIndex((el) => el.id === id);
+        draft.splice(i, 1);
+      })
+    );
+  };
+
+  const handleClick = () => {
+    const title = document.querySelector("#noteinput").value.trim();
+    const id = Math.floor(Math.random() * 100);
+    if (title) {
+      const nextState = produce(data, (draftState) => {
+        draftState.push({ title, id });
+      });
+      document.querySelector("#noteinput").value = "";
+      setData(nextState);
+    }
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar bg="dark" variant="dark">
+        <Container>
+          <Navbar.Brand href="#home">Manga Notes App</Navbar.Brand>
+        </Container>
+      </Navbar>
+      <InputGroup className="mb-3">
+        <FormControl
+          id="noteinput"
+          placeholder="Recipient's username"
+          aria-label="Recipient's username"
+          aria-describedby="basic-addon2"
+        />
+        <Button variant="dark" id="button-addon2" onClick={() => handleClick()}>
+          Add Note
+        </Button>
+      </InputGroup>
+
+      <Notes data={data} handleDelete={handleDelete} />
     </div>
   );
 }
