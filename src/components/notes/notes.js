@@ -12,7 +12,14 @@ const Notes = (props) => {
             onClick={() => props.handleDelete(note.id)}
             style={{ marginLeft: "10px" }}
           >
-            DONE
+            Delete
+          </Button>
+          <Button
+            variant="success"
+            onClick={() => props.handleChange(note.id, note.title)}
+            style={{ marginLeft: "10px" }}
+          >
+            Edit
           </Button>
         </Card.Body>
       </Card>
@@ -20,9 +27,9 @@ const Notes = (props) => {
   ));
 
   return (
-    <li>
-      <ul>{items}</ul>
-    </li>
+    <ul style={{ listStyleType: "none" }}>
+      <li>{items}</li>
+    </ul>
   );
 };
 

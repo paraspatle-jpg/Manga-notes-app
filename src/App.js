@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import produce from "immer";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
@@ -9,7 +9,7 @@ import Notes from "./components/notes/notes.js";
 
 function App() {
   const initialState = [];
-
+  const inputEl = useRef(null);
   const [data, setData] = useState(initialState);
 
   const handleDelete = (id) => {
@@ -19,6 +19,13 @@ function App() {
         draft.splice(i, 1);
       })
     );
+  };
+
+  const handleChange = (id, title) => {
+    inputEl.current.focus();
+    const titleBefore = document.querySelector("#noteinput");
+    titleBefore.value = title;
+    handleDelete(id);
   };
 
   const handleClick = () => {
@@ -32,6 +39,7 @@ function App() {
       setData(nextState);
     }
   };
+
   return (
     <div className="App">
       <Navbar bg="dark" variant="dark">
@@ -41,6 +49,7 @@ function App() {
       </Navbar>
       <InputGroup className="mb-3">
         <FormControl
+          ref={inputEl}
           id="noteinput"
           placeholder="Enter the name of manga"
           aria-label="Recipient's username"
@@ -51,7 +60,11 @@ function App() {
         </Button>
       </InputGroup>
 
-      <Notes data={data} handleDelete={handleDelete} />
+      <Notes
+        data={data}
+        handleDelete={handleDelete}
+        handleChange={handleChange}
+      />
     </div>
   );
 }
