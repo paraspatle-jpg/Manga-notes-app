@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import produce from "immer";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
@@ -8,9 +8,14 @@ import Button from "react-bootstrap/Button";
 import Notes from "./components/notes/notes.js";
 
 function App() {
-  const initialState = [];
+  const localData = localStorage.getItem("data");
+  const initialState = localData ? JSON.parse(localData) : [];
   const inputEl = useRef(null);
   const [data, setData] = useState(initialState);
+
+  useEffect(() => {
+    localStorage.setItem("data", JSON.stringify(data));
+  }, [data]);
 
   const handleDelete = (id) => {
     setData(
